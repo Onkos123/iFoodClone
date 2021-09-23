@@ -1,0 +1,2 @@
+rootProject.name = "iFood Clone"
+include ':app'
