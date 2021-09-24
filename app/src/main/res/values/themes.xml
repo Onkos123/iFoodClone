@@ -14,7 +14,7 @@
         <!-- Customize your theme here. -->
     </style>
 
-    <style name="botaoPadrao" parent="Theme.AppCompat.Light">
+    <style name="botaoPadrao" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <item name="colorControlHighlight">@color/colorButton</item>
         <item name="colorButtonNormal">@color/redAssent</item>
         <item name="android:textColor">@android:color/white</item>

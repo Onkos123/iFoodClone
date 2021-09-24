@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.renderscript.ScriptGroup;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -23,6 +24,7 @@ import org.jetbrains.annotations.NotNull;
 import br.com.ifoodclone.R;
 import br.com.ifoodclone.databinding.ActivityAutenticacaoBinding;
 import br.com.ifoodclone.helper.ConfiguracaoFirebase;
+import br.com.ifoodclone.helper.UsuarioFirebase;
 
 public class AutenticacaoActivity extends AppCompatActivity {
     private ActivityAutenticacaoBinding binding;
@@ -38,6 +40,19 @@ public class AutenticacaoActivity extends AppCompatActivity {
         inicializarComponentes();
 
         verificaUsuarioLogado();
+
+        binding.switchAcesso.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked){//Cadastrar
+                    binding.linearTipoUsuario.setVisibility(View.VISIBLE);
+
+                }else {//Logar
+                    binding.linearTipoUsuario.setVisibility(View.GONE);
+                }
+
+            }
+        });
 
         binding.btnAcesso.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,7 +72,9 @@ public class AutenticacaoActivity extends AppCompatActivity {
                                 public void onComplete(@NonNull @NotNull Task<AuthResult> task) {
                                     if (task.isSuccessful()){
                                         Toast.makeText(AutenticacaoActivity.this, "Cadastro realizado com sucesso!", Toast.LENGTH_SHORT).show();
-                                        abrirTelaPrincipal();
+                                        String tipoUsuario = getTipoUsuario();
+                                        UsuarioFirebase.atualizarTipoUsuario(tipoUsuario);
+                                        abrirTelaPrincipal(tipoUsuario);
                                     }else {
                                         String excessao = "";
 
@@ -83,7 +100,8 @@ public class AutenticacaoActivity extends AppCompatActivity {
                                 public void onComplete(@NonNull @NotNull Task<AuthResult> task) {
                                     if (task.isSuccessful()){
                                         Toast.makeText(AutenticacaoActivity.this, "Logado com sucesso!", Toast.LENGTH_SHORT).show();
-                                        abrirTelaPrincipal();
+                                        String tipoUsuario = auth.getCurrentUser().getDisplayName();
+                                        abrirTelaPrincipal(tipoUsuario);
                                     }else {
                                         Toast.makeText(AutenticacaoActivity.this, "Erro ao fazer login: "+task.getException(), Toast.LENGTH_SHORT).show();
                                     }
@@ -100,19 +118,28 @@ public class AutenticacaoActivity extends AppCompatActivity {
             }
         });
     }
+    private String getTipoUsuario(){
+        return binding.switchTipoUsuario.isChecked() ? "E" : "U";
+    }
 
     private void verificaUsuarioLogado() {
         FirebaseUser usuarioAtual = auth.getCurrentUser();
         if (usuarioAtual != null){
-            abrirTelaPrincipal();
+            String tipoUsuario = usuarioAtual.getDisplayName();
+            abrirTelaPrincipal(tipoUsuario);
         }
     }
 
-    private void abrirTelaPrincipal() {
-        startActivity(new Intent(getApplicationContext(),HomeActivity.class));
+    private void abrirTelaPrincipal(String tipoUsuario) {
+        if (tipoUsuario.equals("E")){//Empresa
+            startActivity(new Intent(getApplicationContext(),EmpresaActivity.class));
+        }else{//Usuario
+            startActivity(new Intent(getApplicationContext(),HomeActivity.class));
+        }
     }
 
     private void inicializarComponentes(){
         auth = ConfiguracaoFirebase.getAuth();
     }
+
 }
