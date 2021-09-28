@@ -6,37 +6,38 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+/**
+ * Created by jamiltondamasceno
+ */
+
 public class ConfiguracaoFirebase {
-    private static DatabaseReference database;
-    private static FirebaseAuth auth;
-    private static StorageReference storage;
 
-    //Retornar a referencia do firebase
+    private static DatabaseReference referenciaFirebase;
+    private static FirebaseAuth referenciaAutenticacao;
+    private static StorageReference referenciaStorage;
+
+    //retorna a referencia do database
     public static DatabaseReference getFirebase(){
-        if (database == null){
-            database = FirebaseDatabase.getInstance().getReference();
+        if( referenciaFirebase == null ){
+            referenciaFirebase = FirebaseDatabase.getInstance().getReference();
         }
-        return database;
+        return referenciaFirebase;
     }
 
-    //Retornar a referencia do auth
-    public static FirebaseAuth getAuth(){
-        if (auth == null){
-            auth = FirebaseAuth.getInstance();
+    //retorna a instancia do FirebaseAuth
+    public static FirebaseAuth getFirebaseAutenticacao(){
+        if( referenciaAutenticacao == null ){
+            referenciaAutenticacao = FirebaseAuth.getInstance();
         }
-        return auth;
+        return referenciaAutenticacao;
     }
 
-    //Retornar a instancia do firebaseStorage
-    public static StorageReference getStorage(){
-        if (storage == null){
-            storage = FirebaseStorage.getInstance().getReference();
+    //Retorna instancia do FirebaseStorage
+    public static StorageReference getFirebaseStorage(){
+        if( referenciaStorage == null ){
+            referenciaStorage = FirebaseStorage.getInstance().getReference();
         }
-        return storage;
+        return referenciaStorage;
     }
 
-    public static String getIdUsuario(){
-        FirebaseAuth auth = ConfiguracaoFirebase.getAuth();
-        return auth.getCurrentUser().getUid();
-    }
 }

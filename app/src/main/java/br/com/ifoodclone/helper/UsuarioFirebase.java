@@ -4,27 +4,35 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 
+/**
+ * Created by jamiltondamasceno
+ */
+
 public class UsuarioFirebase {
 
     public static String getIdUsuario(){
-        FirebaseAuth auth = ConfiguracaoFirebase.getAuth();
-        return auth.getCurrentUser().getUid();
+
+        FirebaseAuth autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
+        return autenticacao.getCurrentUser().getUid();
+
     }
 
     public static FirebaseUser getUsuarioAtual(){
-        FirebaseAuth auth = ConfiguracaoFirebase.getAuth();
-        return auth.getCurrentUser();
+        FirebaseAuth usuario = ConfiguracaoFirebase.getFirebaseAutenticacao();
+        return usuario.getCurrentUser();
     }
 
-    public static boolean atualizarTipoUsuario(String s){
+    public static boolean atualizarTipoUsuario(String tipo){
 
         try {
+
             FirebaseUser user = getUsuarioAtual();
             UserProfileChangeRequest profile = new UserProfileChangeRequest.Builder()
-                    .setDisplayName(s)
+                    .setDisplayName(tipo)
                     .build();
             user.updateProfile(profile);
             return true;
+
         }catch (Exception e){
             e.printStackTrace();
             return false;
