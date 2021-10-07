@@ -7,11 +7,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import com.google.firebase.auth.FirebaseAuth;
-
 import br.com.ifoodclone.R;
-import br.com.ifoodclone.activity.model.Empresa;
-import br.com.ifoodclone.activity.model.Produto;
+import br.com.ifoodclone.model.Produto;
 import br.com.ifoodclone.databinding.ActivityNovoProdutoEmpresaBinding;
 import br.com.ifoodclone.helper.UsuarioFirebase;
 
@@ -50,7 +47,7 @@ public class NovoProdutoEmpresaActivity extends AppCompatActivity {
                     produto.setIdUsuario(idUsuarioLogado);
                     produto.setNome(nome);
                     produto.setDescricao(categoria);
-                    produto.setPreco(taxa);
+                    produto.setPreco(Double.parseDouble(taxa));
                     produto.salvar();
                     
                     finish();

@@ -1,4 +1,4 @@
-package br.com.ifoodclone.activity.model;
+package br.com.ifoodclone.model;
 
 import com.google.firebase.database.DatabaseReference;
 

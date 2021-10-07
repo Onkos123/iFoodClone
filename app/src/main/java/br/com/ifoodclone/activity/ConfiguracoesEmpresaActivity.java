@@ -6,8 +6,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -19,7 +17,6 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -30,7 +27,7 @@ import org.jetbrains.annotations.NotNull;
 import java.io.ByteArrayOutputStream;
 
 import br.com.ifoodclone.R;
-import br.com.ifoodclone.activity.model.Empresa;
+import br.com.ifoodclone.model.Empresa;
 import br.com.ifoodclone.databinding.ActivityConfiguracoesEmpresaBinding;
 import br.com.ifoodclone.helper.ConfiguracaoFirebase;
 import br.com.ifoodclone.helper.UsuarioFirebase;
