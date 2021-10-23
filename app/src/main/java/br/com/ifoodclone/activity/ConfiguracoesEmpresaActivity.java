@@ -40,7 +40,7 @@ public class ConfiguracoesEmpresaActivity extends AppCompatActivity {
     private StorageReference storageReference;
     private DatabaseReference firebaseRef;
     private String idUsuarioLogado;
-    private String urlImagemSelecionada = "";
+    private String urlImagemSelecionada;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,7 +125,8 @@ public class ConfiguracoesEmpresaActivity extends AppCompatActivity {
                         empresa.setPrecoEntrega( Double.parseDouble(taxa) );
                         empresa.setCategoria(categoria);
                         empresa.setTempo( tempo );
-                        empresa.setUrlImagem( urlImagemSelecionada );
+                        if (urlImagemSelecionada != null) empresa.setUrlImagem( urlImagemSelecionada );
+
                         empresa.salvar();
                         finish();
 

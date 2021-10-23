@@ -168,8 +168,10 @@ public class AutenticacaoActivity extends AppCompatActivity {
     private void abrirTelaPrincipal(String tipoUsuario){
         if(tipoUsuario.equals("E")){//empresa
             startActivity(new Intent(getApplicationContext(), EmpresaActivity.class));
+            finish();
         }else{//usuario
             startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+            finish();
         }
     }
 
