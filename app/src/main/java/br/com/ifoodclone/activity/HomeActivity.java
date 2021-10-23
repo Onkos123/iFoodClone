@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -25,6 +27,7 @@ import java.util.List;
 import br.com.ifoodclone.R;
 import br.com.ifoodclone.adapter.AdapterEmpresa;
 import br.com.ifoodclone.helper.ConfiguracaoFirebase;
+import br.com.ifoodclone.listeners.RecyclerItemClickListener;
 import br.com.ifoodclone.model.Empresa;
 
 public class HomeActivity extends AppCompatActivity {
@@ -73,6 +76,35 @@ public class HomeActivity extends AppCompatActivity {
                 return true;
             }
         });
+
+        //Configurar evento de clique
+        recyclerEmpresa.addOnItemTouchListener(
+                new RecyclerItemClickListener(
+                        this,
+                        recyclerEmpresa,
+                        new RecyclerItemClickListener.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(View view, int position) {
+
+                                Empresa empresaSelecionada = empresas.get(position);
+                                Intent i = new Intent(HomeActivity.this, CardapioActivity.class);
+                                i.putExtra("empresa", empresaSelecionada);
+                                startActivity(i);
+
+                            }
+
+                            @Override
+                            public void onLongItemClick(View view, int position) {
+
+                            }
+
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                            }
+                        }
+                )
+        );
 
     }
 

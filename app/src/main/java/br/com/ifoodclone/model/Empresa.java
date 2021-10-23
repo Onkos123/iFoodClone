@@ -2,9 +2,11 @@ package br.com.ifoodclone.model;
 
 import com.google.firebase.database.DatabaseReference;
 
+import java.io.Serializable;
+
 import br.com.ifoodclone.helper.ConfiguracaoFirebase;
 
-public class Empresa {
+public class Empresa implements Serializable {
 
     private String idUsuario;
     private String urlImagem;
