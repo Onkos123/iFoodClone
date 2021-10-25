@@ -24,6 +24,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,6 +45,7 @@ public class CardapioActivity extends AppCompatActivity {
     private ImageView imageEmpresaCardapio;
     private TextView textNomeEmpresaCardapio;
     private Empresa empresaSelecionada;
+    private TextView textCarrinhoQtd, textCarrinhoTotal;
     private AlertDialog dialog;
 
     private AdapterProduto adapterProduto;
@@ -54,6 +56,8 @@ public class CardapioActivity extends AppCompatActivity {
     private String idUsuarioLogado;
     private Usuario usuario;
     private Pedido pedidoRecuperado;
+    private int qtdItensCarrinho;
+    private Double totalCarrinho;
 
 
     @Override
@@ -203,7 +207,51 @@ public class CardapioActivity extends AppCompatActivity {
 
     private void recuperPedido() {
 
-        dialog.dismiss();
+        DatabaseReference pedidoRef = firebaseRef
+                .child("pedidos_usuario")
+                .child( idEmpresa )
+                .child( idUsuarioLogado );
+
+        pedidoRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                qtdItensCarrinho = 0;
+                totalCarrinho = 0.0;
+                itensCarrinho = new ArrayList<>();
+
+                if(dataSnapshot.getValue() != null){
+
+                    pedidoRecuperado = dataSnapshot.getValue(Pedido.class);
+                    itensCarrinho = pedidoRecuperado.getItens();
+
+
+                    for(ItemPedido itemPedido: itensCarrinho){
+
+                        int qtde = itemPedido.getQuantidade();
+                        Double preco = itemPedido.getPreco();
+
+                        totalCarrinho += (qtde * preco);
+                        qtdItensCarrinho += qtde;
+
+                    }
+
+                }
+
+                DecimalFormat df = new DecimalFormat("0.00");
+
+                textCarrinhoQtd.setText( "qtd: " + String.valueOf(qtdItensCarrinho) );
+                textCarrinhoTotal.setText("R$ " + df.format( totalCarrinho ) );
+
+                dialog.dismiss();
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
     }
 
@@ -258,6 +306,8 @@ public class CardapioActivity extends AppCompatActivity {
     private void inicializarComponentes(){
         recyclerProdutosCardapio = findViewById(R.id.recyclerProdutosCardapio);
         imageEmpresaCardapio = findViewById(R.id.imageEmpresaCardapio);
+        textCarrinhoQtd = findViewById(R.id.textCarrinhoQtd);
+        textCarrinhoTotal = findViewById(R.id.textCarrinhoTotal);
         textNomeEmpresaCardapio = findViewById(R.id.textNomeEmpresaCardapio);
     }
 }
