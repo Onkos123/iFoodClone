@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -21,6 +23,7 @@ import br.com.ifoodclone.R;
 import br.com.ifoodclone.adapter.AdapterPedido;
 import br.com.ifoodclone.helper.ConfiguracaoFirebase;
 import br.com.ifoodclone.helper.UsuarioFirebase;
+import br.com.ifoodclone.listeners.RecyclerItemClickListener;
 import br.com.ifoodclone.model.Pedido;
 import dmax.dialog.SpotsDialog;
 
@@ -57,6 +60,32 @@ public class PedidosActivity extends AppCompatActivity {
         recyclerPedidos.setAdapter( adapterPedido );
 
         recuperarPedidos();
+
+        //Adiciona evento de clique no recyclerview
+        recyclerPedidos.addOnItemTouchListener(
+                new RecyclerItemClickListener(
+                        this,
+                        recyclerPedidos,
+                        new RecyclerItemClickListener.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(View view, int position) {
+
+                            }
+
+                            @Override
+                            public void onLongItemClick(View view, int position) {
+                                Pedido pedido = pedidos.get( position );
+                                pedido.setStatus("finalizado");
+                                pedido.atualizarStatus();
+                            }
+
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                            }
+                        }
+                )
+        );
 
     }
 

@@ -2,6 +2,7 @@ package br.com.ifoodclone.model;
 
 import com.google.firebase.database.DatabaseReference;
 
+import java.util.HashMap;
 import java.util.List;
 
 import br.com.ifoodclone.helper.ConfiguracaoFirebase;
@@ -43,6 +44,20 @@ public class Pedido {
                 .child( getIdEmpresa() )
                 .child( getIdUsuario() );
         pedidoRef.setValue( this );
+
+    }
+
+    public void atualizarStatus(){
+
+        HashMap<String, Object> status = new HashMap<>();
+        status.put("status", getStatus() );
+
+        DatabaseReference firebaseRef = ConfiguracaoFirebase.getFirebase();
+        DatabaseReference pedidoRef = firebaseRef
+                .child("pedidos")
+                .child( getIdEmpresa() )
+                .child( getIdPedido() );
+        pedidoRef.updateChildren( status );
 
     }
 
